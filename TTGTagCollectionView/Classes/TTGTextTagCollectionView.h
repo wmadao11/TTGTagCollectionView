@@ -49,6 +49,10 @@
 @property (nonatomic, assign) CGFloat shadowRadius;  // Default is 2f
 @property (nonatomic, assign) CGFloat shadowOpacity; // Default is 0.3f
 
+@property (assign, nonatomic) UIEdgeInsets textPadding;
+@property (assign, nonatomic) NSTextAlignment textAlignment;
+@property (assign, nonatomic) NSInteger textLines;
+
 // Extra space in width and height, will expand each tag's size
 @property (assign, nonatomic) CGSize extraSpace;
 

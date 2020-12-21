@@ -45,6 +45,10 @@
         _shadowRadius = 2;
         _shadowOpacity = 0.3f;
         
+        _textLines = 0;
+        _textPadding = UIEdgeInsetsMake(0, 0, 0, 0);
+        _textAlignment = NSTextAlignmentLeft;
+        
         _extraSpace = CGSizeMake(14, 14);
         _maxWidth = 0.0f;
         _minWidth = 0.0f;
@@ -93,6 +97,10 @@
     newConfig.shadowRadius = _shadowRadius;
     newConfig.shadowOpacity = _shadowOpacity;
     
+    newConfig.textAlignment = _textAlignment;
+    newConfig.textLines = _textLines;
+    newConfig.textPadding = _textPadding;
+    
     newConfig.extraSpace = _extraSpace;
     newConfig.maxWidth = _maxWidth;
     newConfig.minWidth = _minWidth;
@@ -117,11 +125,22 @@
 #pragma mark - GradientLabel
 
 @interface GradientLabel: UILabel
+@property (assign, nonatomic) UIEdgeInsets textPadding;
 @end
 
 @implementation GradientLabel
 + (Class)layerClass {
     return [CAGradientLayer class];
+}
+- (void)drawTextInRect:(CGRect)rect {
+    [super drawTextInRect:UIEdgeInsetsInsetRect(rect, _textPadding)];
+}
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        _textPadding = UIEdgeInsetsMake(0, 0, 0, 0);
+    }
+    return self;
 }
 @end
 
@@ -145,8 +164,10 @@
 
 - (void)commonInit {
     _label = [[GradientLabel alloc] initWithFrame:self.bounds];
-    _label.textAlignment = NSTextAlignmentCenter;
+    _label.textAlignment = NSTextAlignmentLeft;
     _label.userInteractionEnabled = YES;
+    _label.numberOfLines = 0;
+    _label.lineBreakMode = NSLineBreakByWordWrapping;
     [self addSubview:_label];
 }
 
@@ -180,7 +201,10 @@
     // Text style
     _label.font = _config.textFont;
     _label.textColor = _selected ? _config.selectedTextColor : _config.textColor;
-    
+    _label.textAlignment = _config.textAlignment;
+    _label.numberOfLines = _config.textLines;
+    _label.textColor = _selected ? _config.selectedTextColor : _config.textColor;
+    _label.textPadding = _config.textPadding;
     // Normal background
     _label.backgroundColor = _selected ? _config.selectedBackgroundColor : _config.backgroundColor;
     
